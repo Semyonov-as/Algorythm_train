@@ -1,1 +1,2 @@
 https://yandex.ru/yaintern/algorithm-training_1
+https://contest.yandex.ru/contest/27794/problems/G/ -- гипершашки
