@@ -87,6 +87,30 @@ class Node():
         if self._right != None:
             self._right.go_inc()
 
+    def get_leaves(self):
+        if self._left != None:
+            self._left.get_leaves()
+        if self._left == None and self._right == None:
+            print(self._val)
+        if self._right != None:
+            self._right.get_leaves()
+
+    def get_good_parents(self):
+        if self._left != None:
+            self._left.get_good_parents()
+        if self._left != None and self._right != None:
+            print(self._val)
+        if self._right != None:
+            self._right.get_good_parents()
+
+    def get_single_child_parents(self):
+        if self._left != None:
+            self._left.get_single_child_parents()
+        if (self._left != None and self._right == None) or (self._left == None and self._right != None):
+            print(self._val)
+        if self._right != None:
+            self._right.get_single_child_parents()
+
 def task_A():
     inp = "7 3 2 1 9 5 4 6 8 0"
     arr = list(map(int, inp.split()))
@@ -131,4 +155,14 @@ def task_D():
 
     head.go_inc()
 
-task_D()
+def task_E():
+    # inp = "7 3 2 1 9 5 4 6 8 0"
+    # arr = list(map(int, inp.split()))
+    arr = list(map(int, input().split()))
+    head = Node(arr[0])
+    for x in arr[:-1]:
+        head.add(x)
+
+    head.get_single_child_parents()
+
+task_E()

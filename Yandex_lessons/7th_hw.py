@@ -320,10 +320,90 @@ def task_H():
             print('Wrong Answer')
 
 def task_I():
-    pass
+    N, M = map(int, input().split())
+    events = []
+    for i in range(M):
+        c1, t1, c2, t2 = input().split()
+        h1, m1 = map(int, t1.split(':')) 
+        h2, m2 = map(int, t2.split(':'))
+        events.append(((h1, m1), int(c1), 1, i)) 
+        events.append(((h2, m2), int(c2), -1, i))
+
+    events.sort()
+    rest_buses = dict()
+    for i in range(N):
+        rest_buses[i+1] = 0
+    bus_cnt = 0
+    prev_bus_cnt = [-1, -1]
+    routes = set()
+    flag = True
+    while bus_cnt != prev_bus_cnt[-2]:
+        for e in events:
+            if e[2] == 1:
+                routes.add(e[3])
+                if rest_buses[e[1]] > 0:
+                    rest_buses[e[1]] -= 1
+                else:
+                    bus_cnt += 1
+            if e[2] == -1 and e[3] in routes:
+                routes.remove(e[3])
+                rest_buses[e[1]] += 1
+        prev_bus_cnt.append(bus_cnt)
+        if len(prev_bus_cnt) > 10 and prev_bus_cnt[-1] > prev_bus_cnt[-2]:
+            flag = False
+            break
+
+    if flag:
+        print(bus_cnt)
+    else:
+        print(-1)
+
+
 
 def task_J():
-    pass
+    N, W, L = map(int, input().split())
+    events = []
+    for i in range(1, N+1):
+        x1, y1, z1, x2, y2, z2 = map(int, input().split())
+        s = (x2 - x1)*(y2 - y1)
+        events.append((z1, s, 1, i))
+        events.append((z2, s, -1, i))
+
+    events.sort()
+    S = W*L
+    blocks = set()
+    min_set = N + 1
+    cur_s = 0
+    flag = False
+    for e in events:
+        if e[2] == 1:
+            cur_s += e[1]
+            blocks.add(e[3])
+        if e[2] == -1:
+            cur_s -= e[1]
+            blocks.remove(e[3])
+
+        if cur_s == S:
+            min_set = min(min_set, len(blocks))
+
+    for e in events:
+        if e[2] == 1:
+            cur_s += e[1]
+            blocks.add(e[3])
+        if e[2] == -1:
+            cur_s -= e[1]
+            blocks.remove(e[3])
+
+        if cur_s == S and len(blocks) == min_set:
+            flag = True
+            break
+
+    if flag:
+        print('YES')
+        print(len(blocks))
+        print(' '.join([str(x)for x in sorted(list(blocks))]))
+    else:
+        print('NO')
 
 if __name__ == "__main__":
-    task_H()
+    task_J()
